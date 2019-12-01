@@ -39,7 +39,7 @@ void outputMap(gen::MapGenerator &map) {
     std::string outfile = gen::config::outfile;
     std::string outfileExt = gen::config::outfileExt;
     #ifdef PYTHON_RENDERING_SUPPORTED
-        if (outfileExt != std::string(".png")) {
+        if (outfileExt != std::string(".png") && outfileExt != std::string(".svg")) {
             outfile += ".png";
         }
 

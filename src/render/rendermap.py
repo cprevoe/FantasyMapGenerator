@@ -115,7 +115,13 @@ def draw_map(jsonstring, output_filename):
 
     imgwidth = data["image_width"]
     imgheight = data["image_height"]
-    surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, imgwidth, imgheight)
+
+    surface = None
+    if (output_filename.endswith(".svg")):
+        surface = cairo.SVGSurface(output_filename, imgwidth, imgheight)
+    else:
+        surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, imgwidth, imgheight)
+
     ctx = cairo.Context(surface)
 
     update_draw_scale(data["draw_scale"])
@@ -153,5 +159,8 @@ def draw_map(jsonstring, output_filename):
     draw_cities(data["city"], ctx, imgwidth, imgheight)
     draw_towns(data["town"], ctx, imgwidth, imgheight)
     draw_labels(data["label"], ctx, imgwidth, imgheight);
-
-    surface.write_to_png(output_filename)
+    
+    if isinstance(surface, cairo.SVGSurface): 
+        surface.finish()
+    else:
+        surface.write_to_png(output_filename)
